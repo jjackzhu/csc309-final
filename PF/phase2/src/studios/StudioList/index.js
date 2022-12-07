@@ -9,10 +9,9 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 
-const StudioList = ({address}) => {
+const StudioList = (address) => {
 
     const { studios } = useContext(APIContext);
-    console.log(address)
 
 
     // card code from https://mui.com/material-ui/react-card/

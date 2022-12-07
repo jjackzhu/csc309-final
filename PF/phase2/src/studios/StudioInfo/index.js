@@ -9,7 +9,8 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
-import Link from '@mui/material/Link';
+import { Link } from 'react-router-dom';
+
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
@@ -26,7 +27,12 @@ const StudioInfo = () => {
     const [status, setStatus] = useState([]);
 
     const location = useLocation();
-    const [address] = location.state.address;
+    //console.log(location.state)
+   //var address = ""
+    const address = location.state.address.address
+    console.log(address)
+    console.log("HELLO")
+    //address = address.replace(" ", '+');
 
     useEffect(() => {
       fetch(`http://127.0.0.1:8000/studios/${studio_id}/info/`)
@@ -83,8 +89,10 @@ const StudioInfo = () => {
               spacing={2}
               justifyContent="center"
             >
-
-              <Button variant="contained" component={Link} to={`https://www.google.com/maps/dir/?api=1&origin=${address}&destination=${data.studio.latitude},${data.studio.longitude}`}>Get Directions</Button>
+              
+              <a href={`https://www.google.com/maps/dir/?api=1&origin=${address}&destination=${data.studio.latitude},${data.studio.longitude}`} target="_blank" rel="noreferrer">
+              <Button variant="contained">Get Directions</Button>
+              </a>
               <Button variant="outlined">View Classes</Button>
             </Stack>
           </Container>
