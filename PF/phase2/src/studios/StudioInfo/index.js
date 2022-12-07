@@ -9,6 +9,8 @@ import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import Chip from '@mui/material/Chip';
+
 import { Link } from 'react-router-dom';
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
@@ -49,7 +51,6 @@ const StudioInfo = () => {
     // const { studios } = useContext(APIContext);
 
     // altered template code from https://github.com/mui/material-ui/blob/v5.10.16/docs/data/material/getting-started/templates/album/Album.js
-
 
     return (
       <>
@@ -98,9 +99,9 @@ const StudioInfo = () => {
           </Container>
         </Box>
 
-        <Container sx={{ py: 8 }} maxWidth="md">
+        <Container sx={{ py: 8 }} maxWidth="md" align="center" alignItems="center" justifyContent="center">
           
-          <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164}>
+          <ImageList sx={{ width: 500, height: 450 }} cols={3} rowHeight={164} >
             {data.images.map((item) => (
             <ImageListItem key={item.image}>
             <img
@@ -111,6 +112,15 @@ const StudioInfo = () => {
             </ImageListItem>
             ))}
             </ImageList>
+
+
+            <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
+            {data.amenities.map((item) => (
+            <Chip label={`${item.type} x ${item.quantity}`} variant="outlined" align="center" />
+            ))}
+
+          </Stack>
+
 
         </Container>
         </>
