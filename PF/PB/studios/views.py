@@ -5,6 +5,7 @@ from datetime import time
 
 from django.core.exceptions import ObjectDoesNotExist
 from geopy import distance
+
 from geopy.geocoders import Nominatim
 from rest_framework.generics import ListAPIView
 from rest_framework.permissions import IsAuthenticated
@@ -57,11 +58,12 @@ def filter_studios(studios, request):
 
 # ------------Views------------
 # address must be in toronto
+"""
 class GetClosestStudiosView(ListAPIView):
     queryset = Studio
     serializer_class = StudioSerializer
     location = None
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         address = self.request.data.get('address')
@@ -90,10 +92,50 @@ class GetClosestStudiosView(ListAPIView):
         studios = filter_studios(studios, self.request)
 
         return studios
+    """
+
+class GetClosestStudiosView(APIView):
+    #queryset = Studio
+    #serializer_class = StudioSerializer
+    location = None
+    # permission_classes = [IsAuthenticated]
+
+    def post(self, request, *args, **kwargs):
+        address = self.request.data.get('address')
+        print(address)
+        if not address:
+            return Response({'error': 'Not an address'})
+
+        geolocator = Nominatim(user_agent="studios")
+        location = geolocator.geocode(address)
+        self.location = location
+
+        if location is None:
+            return Response({'error': 'Not a valid address'})
+
+        #return super().get(request, *args, **kwargs)
+
+    #def get_queryset(self):
+        # get the coordinates of the address provided by the user
+        current_point = (self.location.latitude, self.location.longitude)
+
+        studios = Studio.objects.all()
+
+        # sort the studios based on distance
+        studios = distance_sort(studios, current_point)
+
+        # filter the sorted studios (if filter parameters were given)
+        studios = filter_studios(studios, self.request)
+
+        studios_serializer = StudioSerializer(studios, many=True)
+
+        #return studios
+        return Response(studios_serializer.data)
+
 
 
 class GetStudioInfoView(APIView):
-    permission_classes = [IsAuthenticated]
+    # permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         studio_id = self.kwargs.get("studio_id")
@@ -122,7 +164,7 @@ class StudioClassSearchView(ListAPIView):
     queryset = Studio
     serializer_class = ClassesSerializer
     studio = None
-    permission_classes = [IsAuthenticated]
+    #permission_classes = [IsAuthenticated]
 
     def get(self, request, *args, **kwargs):
         studio_id = self.kwargs.get("studio_id")

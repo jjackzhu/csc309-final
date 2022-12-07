@@ -7,7 +7,8 @@ class StudioSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Studio
-        fields = ['name',
+        fields = ['id',
+                  'name',
                   'address',
                   'latitude',
                   'longitude',

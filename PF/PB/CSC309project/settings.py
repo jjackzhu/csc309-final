@@ -29,6 +29,7 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 ALLOWED_HOSTS = ['*']
 
+
 # Application definition
 
 INSTALLED_APPS = [
@@ -45,6 +46,7 @@ INSTALLED_APPS = [
     'subscriptions',
     'geopy',
     'django_google_maps',
+    "corsheaders"
 ]
 
 AUTH_USER_MODEL = 'accounts.MyUser'

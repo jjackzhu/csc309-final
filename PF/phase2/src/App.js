@@ -1,25 +1,28 @@
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
+import {BrowserRouter, Route, Routes} from "react-router-dom";
+import Search from './studios/Search';
+import Layout from './Layout';
+import APIContext, {useAPIContext} from "./studios/Context/StudioContext";
+import StudioInfo from './studios/StudioInfo';
 
 function App() {
+
+    const studios = (
+        <APIContext.Provider value={useAPIContext()}>
+            <Search />
+        </APIContext.Provider>
+    )
+    
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+      <BrowserRouter>
+          <Routes>
+              <Route path="studios" element={studios} />
+              <Route path="studios/:studio_id/info" element={<StudioInfo />} />
+          </Routes>
+      </BrowserRouter>
+  )
+
 }
 
 export default App;
