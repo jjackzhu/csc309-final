@@ -8,6 +8,7 @@ from geopy import distance
 
 from geopy.geocoders import Nominatim
 from rest_framework.generics import ListAPIView
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -93,11 +94,17 @@ class GetClosestStudiosView(ListAPIView):
 
         return studios
     """
+class StandardResultsSetPagination(PageNumberPagination):
+    page_size = 10
+    page_size_query_param = 'perPage'
+    max_page_size = 10
 
-class GetClosestStudiosView(APIView):
+class GetClosestStudiosView(APIView, StandardResultsSetPagination):
+
     #queryset = Studio
     #serializer_class = StudioSerializer
     location = None
+    pagination_class = StandardResultsSetPagination
     # permission_classes = [IsAuthenticated]
 
     def post(self, request, *args, **kwargs):
@@ -127,10 +134,13 @@ class GetClosestStudiosView(APIView):
         # filter the sorted studios (if filter parameters were given)
         studios = filter_studios(studios, self.request)
 
+        studios = self.paginate_queryset(studios, request, view=self)
+    
         studios_serializer = StudioSerializer(studios, many=True)
 
         #return studios
-        return Response(studios_serializer.data)
+        #return Response(studios_serializer.data)
+        return self.get_paginated_response(studios_serializer.data)
 
 
 

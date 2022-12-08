@@ -10,11 +10,12 @@ import Map from "../Map";
 
 
 const Search = () => {
-    const { setStudios } = useContext(APIContext);
+    const { studios, setStudios } = useContext(APIContext);
     const [inputs, setInputs] = useState({streetNum: "", streetName: "",  studio_names: "", amenities: ""});
     //const [address, setAddress] = useState("")
     //const [page, setPage] = useState({num: 1})
     const [params, setParams] = useState({page: 1, address: ""})
+    const [next, setNext] = useState()
 
     const handleInputChange = (event) => {
         const target = event.target;
@@ -58,7 +59,9 @@ const Search = () => {
         })
         .then(res => res.json())
         .then(json => {
-            setStudios(json);
+            console.log(json)
+            setStudios(json.results);
+            setNext(json.next)
         })
     }
     }, [params])
@@ -127,7 +130,9 @@ return (
 
 <Map address={params.address}/>
 
+{studios && (
 <StudioList address={params.address} />
+)}
 <Button onClick={() => setParams({
                     ...params,
                 page: Math.max(1, params.page - 1)
@@ -135,10 +140,10 @@ return (
                     Prev
             </Button>
 
-            <Button onClick={() => setParams({
+            <Button onClick={() => next ? (setParams({
                 ...params,
                 page: params.page + 1
-            })}>
+            }) ): ""}>
                     Next
             </Button>
     

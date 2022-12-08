@@ -32,8 +32,7 @@ const StudioInfo = () => {
     //console.log(location.state)
    //var address = ""
     const address = location.state.address.address
-    console.log(address)
-    console.log("HELLO")
+
     //address = address.replace(" ", '+');
 
     useEffect(() => {

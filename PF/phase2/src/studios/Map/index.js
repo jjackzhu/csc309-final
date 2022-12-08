@@ -8,8 +8,6 @@ import StudioInfo from "../StudioInfo";
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
 
-import InfoWindowEx from "./MapInfoWindow";
-
 const containerStyle = {
     width: '400px',
     height: '400px'
@@ -45,7 +43,6 @@ const Map = (address) => {
 
 
 
-
     // marker infoWindow code from https://medium.com/kirsten-werner/clickable-markers-in-a-google-maps-react-component-3e9a522e1fff
     return isLoaded ? (
         <GoogleMap
@@ -56,7 +53,7 @@ const Map = (address) => {
 
         >
           { /* Child components, such as markers, info windows, etc. */ }
-          {studios.map((studio, index) => (
+          {studios ? studios.map((studio, index) => (
               <Marker
               key={index}
               position={{lat: studio.latitude, lng: studio.longitude}} 
@@ -64,7 +61,8 @@ const Map = (address) => {
                 setSelectedMarker({studio: studio});
              }}
               />
-          ))}
+          )) : <></>
+        }
 
             {selectedMarker.studio && (
                  <InfoWindow
