@@ -18,7 +18,7 @@ const StudioList = (address) => {
     return (
         <div>
             {studios.map((studio, index) => (
-            <Card sx={{ minWidth: 275 }}>
+            <Card sx={{ minWidth: 275 }} key={index}>
                 <CardContent>
                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         {studio.distance}
