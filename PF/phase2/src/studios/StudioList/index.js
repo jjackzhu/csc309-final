@@ -10,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Container from '@mui/material/Container';
+import Map from "../Map";
 
 const StudioList = (address) => {
 
@@ -17,7 +18,9 @@ const StudioList = (address) => {
 
 
     // card code from https://mui.com/material-ui/react-card/
-    return (
+    return studios && (
+        <>
+        <Map address={address.address}/>
         <Container sx={{ py: 4 }} maxWidth="md">
         <Grid container spacing={4} align="center" alignItems="center" justifyContent="center">
             {studios.map((studio, index) => (
@@ -42,6 +45,7 @@ const StudioList = (address) => {
         ))}
         </Grid>
         </Container>
+        </>
 
     )
 

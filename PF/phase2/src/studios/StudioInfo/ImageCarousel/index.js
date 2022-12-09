@@ -13,7 +13,7 @@ function ImageCarousel({images}) {
     return (images ? (
         <Carousel width="500px" height="400px" infiniteLoop dynamicHeight={false} >
             {images ? images.map((item, index) => (
-            <div height="300px" width="300px">
+            <div height="300px" width="300px" key={index}>
             <img width="auto" height="auto" src={`${item.image}`} />
             </div>
             )) : <></>}

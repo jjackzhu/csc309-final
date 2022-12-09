@@ -55,7 +55,7 @@ const Search = () => {
     useEffect(() => {
         if (initialRender.current < 2) {
             initialRender.current += 1;
-          } else {
+          } else if (params.address) {
             //console.log(params.address)
 
         const { streetNum, streetName, studio_names, amenities } = inputs;
@@ -125,7 +125,6 @@ return (error &&
           backgroundPosition: 'center',
         }}
       >
-
         <Grid container alignItems="center"
           justifyContent="center"
           >
@@ -149,6 +148,9 @@ return (error &&
 
     <Typography component="h1" variant="h1" color="inherit" gutterBottom align="center">
         Search
+        <Typography component="h5" variant="h6" color="inherit" gutterBottom align="center">
+        Find studios near you
+        </Typography>
     </Typography>
     <Alert severity="error" sx={{display: error.display}}> {error.message} </Alert>
 
@@ -244,8 +246,8 @@ return (error &&
       </Paper>
 
 
-<Map address={params.address}/>
 
+    
 {studios && (
 <StudioList address={params.address} />
 )}

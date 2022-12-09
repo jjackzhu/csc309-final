@@ -4,6 +4,7 @@ import Button from "@mui/material/Button";
 import TextField from '@mui/material/TextField'
 import ClassList from "./ClassList";
 import Map from "../Map";
+import moment from 'moment';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
@@ -15,7 +16,9 @@ import Container from '@mui/material/Container';
 import { Typography } from "@mui/material";
 import { useParams, useLocation} from "react-router-dom";
 import dayjs, { Dayjs } from 'dayjs';
-import Stack from '@mui/material/Stack';;
+import Stack from '@mui/material/Stack';import { isSameDateError } from "@mui/x-date-pickers/internals/hooks/validation/useDateValidation";
+import Alert from '@mui/material/Alert';
+;
 
 
 
@@ -24,6 +27,7 @@ const ClassSearch = ({studio_id}) => {
     const [inputs, setInputs] = useState({class_names: "", coaches: "", start_date: null, end_date: null, start_time: null, end_time: null});
     //const [address, setAddress] = useState("")
     const [page, setPage] = useState(1)
+    const [error, setError] = useState({message: "", display: "none"})
     //const [params, setParams] = useState({page: 1, time_range: ""})
    //const [params, setParams] = useState({page: 1, address: ""})
 
@@ -41,23 +45,39 @@ const ClassSearch = ({studio_id}) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        //setAddress(a);
+        const { class_names, coaches, start_date, end_date, start_time, end_time } = inputs;
         setPage(1)
-        fetchClasses()
+        //console.log(start_date)
+        if (start_date && end_date){
+          if (start_date.$y < end_date.$y){
+            fetchClasses()
+          }
+          else if (start_date.$y == end_date.$y && start_date.$M < end_date.$M){
+            fetchClasses()
+          }
+          else if (start_date.$y == end_date.$y && start_date.$M == end_date.$M && start_date.$D < end_date.$D){
+            fetchClasses()
+          }
+         else{
+           setError({message: "Please enter a end date later than the start date.", display: "visible"})
+          }
+      }
     }
 
     const fetchClasses = () => {
 
         const { class_names, coaches, start_date, end_date, start_time, end_time } = inputs;
+        setError({message: "", display: "none"})
         if (start_date && end_date){
-            var dates = start_date.toString() + "," + end_date.toString()
+            //console.log(start_date)
+            var dates = moment(start_date.$d).format('YYYY-MM-DD') + "," + moment(end_date.$d).format('YYYY-MM-DD')
         }
         else{
             var dates = ""
         }
 
         if (start_time && end_time){
-            var time_range = start_time.toString() + "," + end_time.toString()
+            var time_range = moment(start_time.$d).format('HH:mm') + "," + moment(end_time.$d).format('HH:mm')
         }
         else{
             var time_range = ""
@@ -69,7 +89,6 @@ const ClassSearch = ({studio_id}) => {
         })
         .then(res => res.json())
         .then(json => {
-            console.log(json)
             setData(json);
         })
     }
@@ -98,6 +117,7 @@ return inputs && (
     <Typography component="h1" variant="h3" color="inherit" gutterBottom align="center">
         Search classes
     </Typography>
+    <Alert severity="error" sx={{display: error.display}}> {error.message} </Alert>
 
     <TextField
           name="class_names"
@@ -110,7 +130,7 @@ return inputs && (
             position: 'relative',
             p: { xs: 3, md: 1 },
             pr: { md: 0 },
-            width: 100
+            width: 200
           }}
     />
 
@@ -124,7 +144,7 @@ return inputs && (
             position: 'relative',
             p: { xs: 3, md: 1 },
             pr: { md: 0 },
-            width: 300
+            width: 200
           }}
     />
     <Container>
@@ -139,7 +159,12 @@ return inputs && (
                 ...inputs,
                 start_date: newValue});
           }}
-          renderInput={(params) => <TextField {...params} />}
+          renderInput={(params) => <TextField sx={{
+            position: 'relative',
+            p: { xs: 3, md: 1 },
+            pr: { md: 0 },
+            width: 200
+          }}{...params} />}
         />
     <DesktopDatePicker
      name="end_date"
@@ -151,38 +176,56 @@ return inputs && (
                 ...inputs,
                 end_date: newValue});
           }}
-          renderInput={(params) => <TextField {...params} />}
+          renderInput={(params) => <TextField sx={{
+            position: 'relative',
+            p: { xs: 3, md: 1 },
+            pr: { md: 0 },
+            width: 200
+          }}
+          {...params} />}
         />
-
+    <br />
     <TimePicker
      name="start_time"
-          label="Start Time"
+          label="Start Time Range"
           value={inputs.start_time}
           onChange={(newValue) => {
             setInputs({
                 ...inputs,
                 start_time: newValue});
           }}
-          renderInput={(params) => <TextField {...params} />}
+          renderInput={(params) => <TextField sx={{
+            position: 'relative',
+            p: { xs: 3, md: 1 },
+            pr: { md: 0 },
+            width: 200
+          }}
+          {...params} />}
         />
 
     <TimePicker
      name="end_time"
-          label="End Time"
+          label="End Time Range"
           value={inputs.end_time}
           onChange={(newValue) => {
             setInputs({
                 ...inputs,
                 end_time: newValue});
           }}
-          renderInput={(params) => <TextField {...params} />}
+          renderInput={(params) => <TextField sx={{
+            position: 'relative',
+            p: { xs: 3, md: 1 },
+            pr: { md: 0 },
+            width: 200
+          }}
+          {...params} />}
         />
     </LocalizationProvider>
     </Container>
 
     <br></br>
 
-    <Button type="submit">
+    <Button variant="contained" type="submit">
         Search
     </Button>
     </Container>
