@@ -7,6 +7,7 @@ import { GoogleMap, useJsApiLoader, Marker, InfoWindow } from '@react-google-map
 import StudioInfo from "../StudioInfo";
 import { Link } from 'react-router-dom';
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 
 const containerStyle = {
     width: '400px',
@@ -45,11 +46,23 @@ const Map = (address) => {
 
     // marker infoWindow code from https://medium.com/kirsten-werner/clickable-markers-in-a-google-maps-react-component-3e9a522e1fff
     return isLoaded ? (
+
+      <Box
+         direction="column"
+         display="flex" 
+         align="center" alignItems="center" justifyContent="center"
+         width="700"
+         height="500"
+        >
         <GoogleMap
           mapContainerStyle={containerStyle}
           center={center}
-          mapConstainerClassName="map-container"
+          mapContainerClassName="map-container"
           zoom={10}
+          mapContainerStyle={{
+            width: '1000px',
+            height: '500px'
+          }}
 
         >
           { /* Child components, such as markers, info windows, etc. */ }
@@ -86,6 +99,7 @@ const Map = (address) => {
 
           <></>
         </GoogleMap>
+        </Box>
     ) : <></>
 
 

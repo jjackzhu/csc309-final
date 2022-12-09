@@ -109,7 +109,6 @@ class GetClosestStudiosView(APIView, StandardResultsSetPagination):
 
     def post(self, request, *args, **kwargs):
         address = self.request.data.get('address')
-        print(address)
         if not address:
             return Response({'error': 'Not an address'})
 
@@ -161,7 +160,7 @@ class GetStudioInfoView(APIView):
         studio_amenity_serializer = StudioAmenitySerializer(studio_amenities,
                                                             many=True)
         studio_image_serializer = StudioImageSerializer(studio_images,
-                                                        many=True)
+                                                        many=True, context={'request': request})
 
         return Response({
             'studio': studio_serializer.data,
@@ -223,6 +222,7 @@ class StudioClassSearchView(ListAPIView):
                                                     minute=int(start_time[1])),
                                       datetime.time(hour=int(end_time[0]),
                                                     minute=int(end_time[1]))))
+            print(classes)
 
         return classes
 

@@ -8,6 +8,8 @@ import CardContent from '@mui/material/CardContent';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 import { Link } from 'react-router-dom';
+import Grid from '@mui/material/Grid';
+import Container from '@mui/material/Container';
 
 const StudioList = (address) => {
 
@@ -16,10 +18,12 @@ const StudioList = (address) => {
 
     // card code from https://mui.com/material-ui/react-card/
     return (
-        <div>
+        <Container sx={{ py: 4 }} maxWidth="md">
+        <Grid container spacing={4} align="center" alignItems="center" justifyContent="center">
             {studios.map((studio, index) => (
-            <Card sx={{ minWidth: 275 }} key={index}>
-                <CardContent>
+                <Grid item key={index} xs={12} sm={6} md={4}>
+            <Card sx={{ height: '100%', display: 'flex', flexDirection: 'column' }} key={index}>
+                <CardContent sx={{ flexGrow: 1 }}>
                     <Typography sx={{ fontSize: 14 }} color="text.secondary" gutterBottom>
                         {studio.distance}
                     </Typography>
@@ -30,12 +34,14 @@ const StudioList = (address) => {
                         {studio.address}
                     </Typography>
                 </CardContent>
-                <CardActions>
-                    <Button size="small" component={Link} to={`/studios/${studio.id}/info`} state={{"address": address}}>More Info</Button>
+                <CardActions align="center" alignItems="center" justifyContent="center">
+                    <Button size="small" align="center" alignItems="center" justifyContent="center" component={Link} to={`/studios/${studio.id}/info`} state={{"address": address}}>More Info</Button>
                 </CardActions>
             </Card>
+            </Grid>
         ))}
-        </div>
+        </Grid>
+        </Container>
 
     )
 

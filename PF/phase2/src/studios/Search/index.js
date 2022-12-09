@@ -3,9 +3,17 @@
 import {useState, useContext, useEffect, useRef} from "react";
 import Button from "@mui/material/Button";
 import TextField from '@mui/material/TextField'
+import Box from '@mui/material/Box'
 import APIContext from "../Context/StudioContext";
 import StudioList from "../StudioList";
 import Map from "../Map";
+import { Typography } from "@mui/material";
+import Paper from '@mui/material/Paper';
+
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import Container from '@mui/material/Container';
+import Alert from '@mui/material/Alert';
 
 
 
@@ -16,6 +24,8 @@ const Search = () => {
     //const [page, setPage] = useState({num: 1})
     const [params, setParams] = useState({page: 1, address: ""})
     const [next, setNext] = useState()
+    const [error, setError] = useState( {message: "", display: "none"})
+   //const [message, setMessage] = useState( {message: "Enter an address", colour: ""})
 
     const handleInputChange = (event) => {
         const target = event.target;
@@ -59,7 +69,23 @@ const Search = () => {
         })
         .then(res => res.json())
         .then(json => {
-            console.log(json)
+            if (json.error) {
+                //setMessage({message: json.error, 
+                    //colour: "red"})
+                    setError({
+                        message: json.error,
+                        display: ""
+                    })
+                }
+            else{
+                //setMessage({message: "Enter an address", 
+                    //colour: "white"})
+                    setError({
+                        message: "",
+                        display: "none"
+                    })
+
+            }
             setStudios(json.results);
             setNext(json.next)
         })
@@ -85,16 +111,76 @@ const Search = () => {
 
 
 
-return (
+return (error &&
+    
 <>
+<Paper
+        sx={{
+          position: 'relative',
+          backgroundColor: '#fa991c',
+          color: '#fff',
+          m: 4,
+          backgroundSize: 'cover',
+          backgroundRepeat: 'no-repeat',
+          backgroundPosition: 'center',
+        }}
+      >
+
+        <Grid container alignItems="center"
+          justifyContent="center"
+          >
+          <Grid item md={6}>
+            <Box
+              sx={{
+                position: 'relative',
+                p: { xs: 3, md: 6 },
+                pr: { md: 0 },
+              }}
+              alignItems="center"
+            >
+
 <form onSubmit={handleSubmit}>
+<Container  sx={{
+                position: 'relative',
+                p: { xs: 3, md: 1 },
+                pr: { md: 0 },
+              }}
+              maxWidth="md" align="center" alignItems="center" justifyContent="center">
+
+    <Typography component="h1" variant="h1" color="inherit" gutterBottom align="center">
+        Search
+    </Typography>
+    <Alert severity="error" sx={{display: error.display}}> {error.message} </Alert>
+
+    <Typography
+        component="h1"
+        variant="h5" 
+    align="center"
+    sx={{
+        position: 'relative',
+        p: { xs: 3, md: 1 },
+        pr: { md: 0 },
+      }}
+    >
+        Enter an address
+    </Typography>
+
+
+
     <TextField
           required
           name="streetNum"
           id="outlined-required"
-          label="Street Number"
+          label="Street #"
           value={inputs.streetNum}
           onChange={handleInputChange}
+          fullWidth={true}
+          sx={{
+            position: 'relative',
+            p: { xs: 3, md: 1 },
+            pr: { md: 0 },
+            width: 100
+          }}
     />
 
     <TextField
@@ -104,6 +190,12 @@ return (
           label="Street Name"
           value={inputs.streetName}
           onChange={handleInputChange}
+          sx={{
+            position: 'relative',
+            p: { xs: 3, md: 1 },
+            pr: { md: 0 },
+            width: 300
+          }}
     />
 
     <TextField
@@ -112,6 +204,12 @@ return (
         label="Amenities"
         value={inputs.amenities}
         onChange={handleInputChange}
+        sx={{
+            position: 'relative',
+            p: { xs: 3, md: 1 },
+            pr: { md: 0 },
+            width: 150
+          }}
     />
 
     <TextField
@@ -120,19 +218,39 @@ return (
         label="Studio Name"
         value={inputs.studio_names}
         onChange={handleInputChange}
+        sx={{
+            position: 'relative',
+            p: { xs: 3, md: 1 },
+            pr: { md: 0 },
+            width: 150
+          }}
     />
-
+    <br></br>
     <Button type="submit">
         Search
     </Button>
+    </Container>
 
 </form>
+
+
+
+
+
+
+            </Box>
+          </Grid>
+        </Grid>
+      </Paper>
+
 
 <Map address={params.address}/>
 
 {studios && (
 <StudioList address={params.address} />
 )}
+
+<Container maxWidth="md" align="center" alignItems="center" justifyContent="center">
 <Button onClick={() => setParams({
                     ...params,
                 page: Math.max(1, params.page - 1)
@@ -146,6 +264,7 @@ return (
             }) ): ""}>
                     Next
             </Button>
+        </Container>
     
 </>
 )

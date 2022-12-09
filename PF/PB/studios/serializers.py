@@ -23,6 +23,12 @@ class StudioImageSerializer(serializers.ModelSerializer):
         model = StudioImage
         fields = ['studio', 'image', ]
 
+    def get_image_url(self, image):
+        request = self.context.get('request')
+        image_url = image.image.url
+        path = "studio_images" + image_url
+        return request.build_absolute_uri(path)
+
 
 class StudioAmenitySerializer(serializers.ModelSerializer):
 
