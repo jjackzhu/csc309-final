@@ -45,11 +45,14 @@ INSTALLED_APPS = [
     'subscriptions',
     'geopy',
     'django_google_maps',
+    'corsheaders',
 ]
 
 AUTH_USER_MODEL = 'accounts.MyUser'
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.common.CommonMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -145,3 +148,8 @@ REST_FRAMEWORK = {
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME' : timedelta(days=1),
 }
+
+CORS_ALLOWED_ORIGINS = [
+    'http://localhost:3000',
+]
+
