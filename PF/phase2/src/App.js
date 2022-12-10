@@ -11,7 +11,6 @@ import SignUp from "./componentsSal/SignUp";
 import LogIn from "./componentsSal/Login";
 import Edit from "./componentsSal/Edit";
 import Dashboard from "./componentsSal/Classes";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
 import APIContext, {useAPIContext} from "./contextsSal/APIContext";
 
 
@@ -28,6 +27,12 @@ const theme = createTheme({
 
 
 function App() {
+  const classes = (  
+    <APIContext.Provider value={useAPIContext()}>  
+        <Dashboard />  
+    </APIContext.Provider>  
+  )  
+  
   return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
