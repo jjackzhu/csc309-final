@@ -90,7 +90,7 @@ class UserCard(models.Model):
                                 on_delete=models.CASCADE)
     card_num = models.DecimalField(null=False, blank=False, max_digits=19,
                                    decimal_places=0)
-    cvv = models.CharField(null=False, blank=False, max_length=3,
+    cvv = models.CharField(null=False, blank=False, max_length=4,
                            validators=[MinLengthValidator(3)])
     name = models.CharField(null=False, blank=False, max_length=120)
     expires_in = models.CharField(null=False, blank=False, max_length=5,
