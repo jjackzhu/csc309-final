@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'subscriptions',
     'geopy',
     'django_google_maps',
+    'corsheaders',
 ]
 
 AUTH_USER_MODEL = 'accounts.MyUser'

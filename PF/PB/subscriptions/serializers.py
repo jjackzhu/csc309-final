@@ -8,7 +8,8 @@ from subscriptions.models import SubPlan, UserCard, UserPayment, UserPlan
 class SubPlanSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubPlan
-        fields = ['name',
+        fields = ['id',
+                  'name',
                   'price',
                   'month_duration']
 
