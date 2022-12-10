@@ -18,6 +18,8 @@ const StudioInfo = ({studio_id}) => {
 
     const [chosen, setChosen] = useState([]);
 
+    const[reload, setReload] = useState(true)
+
     let date = moment()
         .utcOffset('-05:00')
         .format('YYYY-MM-DD HH:mm:ss');
@@ -36,6 +38,7 @@ const StudioInfo = ({studio_id}) => {
             })
         }
         setChosen(newChosen)
+        setReload(false)
 
     };
     const handleEnroll = () =>{
@@ -53,22 +56,25 @@ const StudioInfo = ({studio_id}) => {
         }
         setAvailable([])
         setChosen([])
+        setReload(true)
         Promise.all(promises)
             .then(responses => console.log(responses));
     }
 
     useEffect(() => {
-        axios.get(`http://localhost:8000/classes/1/info/`)
-            .then((res) => {
-                setAvailable(res.data.results)
-            })
-            .catch((error) =>{
-                if (error.request.status === 401){
-                    console.log('here 401')
-                    navigate('/login')
-                }
-            })
-    }, [available])
+        if (reload) {
+            axios.get(`http://localhost:8000/classes/1/info/`)
+                .then((res) => {
+                    setAvailable(res.data.results)
+                })
+                .catch((error) => {
+                    if (error.request.status === 401) {
+                        console.log('here 401')
+                        navigate('/login')
+                    }
+                })
+        }
+    }, [reload])
     return (
         <>
             <Toolbar sx={{
