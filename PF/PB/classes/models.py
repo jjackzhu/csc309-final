@@ -26,6 +26,7 @@ class Classes(models.Model):
 class ClassSchedule(models.Model):
     user = models.ForeignKey(to=get_user_model(), on_delete=models.CASCADE)
     classes = models.ForeignKey(to=Classes, on_delete=CASCADE)
+    time = models.DateTimeField(null=True, blank=True)
 
     def __str__(self):
         return f'{self.classes.name}: {self.user.username}'

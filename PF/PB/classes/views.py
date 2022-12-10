@@ -8,7 +8,7 @@ from rest_framework.views import APIView
 
 from studios.models import Studio
 from .models import Classes, ClassSchedule
-from .serializers import ClassesSerializer, ScheduleSerializer
+from .serializers import ClassesSerializer, ScheduleSerializer, StudioSerializer
 
 
 # Create your views here.
@@ -25,8 +25,16 @@ class StudioClassView(ListAPIView):
         studio_id = self.kwargs.get("studio_id")
         studio = get_object_or_404(Studio, pk=studio_id)
         # what if no class has that studio edge case
-        classes = Classes.objects.filter(studio=studio).filter(time__gte=current_time).order_by('time')
+        classes = Classes.objects.filter(studio=studio).filter(time__gte=current_time).order_by('-time')
         return classes
+
+
+class StudiosView(ListAPIView):
+    model = Studio
+    serializer_class = StudioSerializer
+    queryset = Studio.objects.all()
+
+    # paginate_by = 100
 
 
 class ScheduleView(ListAPIView):
@@ -35,21 +43,24 @@ class ScheduleView(ListAPIView):
     serializer_class = ScheduleSerializer
 
     def get_queryset(self):
-        classes = ClassSchedule.objects.filter(user=self.request.user)
+        classes = ClassSchedule.objects.filter(user=self.request.user).order_by('-time')
         print(classes)
         return classes
 
 
 class EnrollClassView(APIView):
     permission_classes = [IsAuthenticated]
+
     def get(self, request, *args, **kwargs):
         class_to_enroll = get_object_or_404(Classes, id=kwargs['class_id'])
         user = self.request.user
         # check if user subscribed
-        if not user.is_subscribed(class_to_enroll.time.date()):
-            return Response({
-                'detail': "User not subscribed"
-            })
+
+        #TESTING PURPOSES PUT BACK AFTER
+        # if not user.is_subscribed(class_to_enroll.time.date()):
+        #     return Response({
+        #         'detail': "User not subscribed"
+        #     })
 
         # update classes
         # check capacity and time
@@ -66,14 +77,21 @@ class EnrollClassView(APIView):
             return Response({
                 'detail': "Class has already finished or started"
             })
+        already_enrolled = ClassSchedule.objects.filter(user=user, classes=class_to_enroll)
+        if not already_enrolled:
+            ClassSchedule.objects.create(
+                user=user,
+                classes=class_to_enroll,
+                time=class_to_enroll.time
+            )
+            return Response({
+                'detail': "user was enrolled"
+            })
+        else:
+            return Response({
+                'detail': "user was already enrolled"
+            })
 
-        ClassSchedule.objects.create(
-            user=user,
-            classes=class_to_enroll
-        )
-        return Response({
-            'detail': "user was enrolled"
-        })
 
 
 class DropClassView(APIView):
