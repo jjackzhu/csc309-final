@@ -63,7 +63,7 @@ const StudioInfo = ({studio_id}) => {
 
     useEffect(() => {
         if (reload) {
-            axios.get(`http://localhost:8000/classes/1/info/`)
+            axios.get(`http://localhost:8000/classes/${studio_id}/info/`)
                 .then((res) => {
                     setAvailable(res.data.results)
                 })

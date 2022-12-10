@@ -20,12 +20,9 @@ import Alert from '@mui/material/Alert';
 const Search = () => {
     const { studios, setStudios } = useContext(APIContext);
     const [inputs, setInputs] = useState({streetNum: "", streetName: "",  studio_names: "", amenities: ""});
-    //const [address, setAddress] = useState("")
-    //const [page, setPage] = useState({num: 1})
     const [params, setParams] = useState({page: 1, address: ""})
     const [next, setNext] = useState()
     const [error, setError] = useState( {message: "", display: "none"})
-   //const [message, setMessage] = useState( {message: "Enter an address", colour: ""})
 
     const handleInputChange = (event) => {
         const target = event.target;
@@ -62,7 +59,7 @@ const Search = () => {
         const formData  = new FormData();
         formData.append("address", params.address);
 
-        fetch(`http://127.0.0.1:8000/studios/map/?studio_names=${studio_names}&amenities=${amenities}&page=${params.page}`, 
+        fetch(`http://127.0.0.1:8000/studios/map/?studio_names=${studio_names}&amenities=${amenities}&page=${params.page}`,
         {
             method: 'POST',
             body: formData
@@ -70,7 +67,7 @@ const Search = () => {
         .then(res => res.json())
         .then(json => {
             if (json.error) {
-                //setMessage({message: json.error, 
+                //setMessage({message: json.error,
                     //colour: "red"})
                     setError({
                         message: json.error,
@@ -78,7 +75,7 @@ const Search = () => {
                     })
                 }
             else{
-                //setMessage({message: "Enter an address", 
+                //setMessage({message: "Enter an address",
                     //colour: "white"})
                     setError({
                         message: "",
@@ -92,13 +89,13 @@ const Search = () => {
     }
     }, [params])
 
-    
+
     /*useEffect(() => {
         const { streetNum, streetName, studio_names, amenities } = inputs;
         var address = streetNum + " " + streetName + " Toronto ON CA";
         const formData  = new FormData();
         formData.append("address", address);
-        fetch(`http://127.0.0.1:8000/studios/map/?studio_names=${studio_names}&amenities=${amenities}&page=${page.num}`, 
+        fetch(`http://127.0.0.1:8000/studios/map/?studio_names=${studio_names}&amenities=${amenities}&page=${page.num}`,
         {
             method: 'POST',
             body: formData
@@ -112,7 +109,7 @@ const Search = () => {
 
 
 return (error &&
-    
+
 <>
 <Paper
         sx={{
@@ -156,7 +153,7 @@ return (error &&
 
     <Typography
         component="h1"
-        variant="h5" 
+        variant="h5"
     align="center"
     sx={{
         position: 'relative',
@@ -247,7 +244,7 @@ return (error &&
 
 
 
-    
+
 {studios && (
 <StudioList address={params.address} />
 )}
@@ -267,7 +264,7 @@ return (error &&
                     Next
             </Button>
         </Container>
-    
+
 </>
 )
 

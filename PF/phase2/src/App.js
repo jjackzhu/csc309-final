@@ -11,13 +11,10 @@ import SignUp from "./componentsSal/SignUp";
 import LogIn from "./componentsSal/Login";
 import Edit from "./componentsSal/Edit";
 import Dashboard from "./componentsSal/Classes";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
 import APIContext, {useAPIContext} from "./contextsSal/APIContext";
 
-import {BrowserRouter, Route, Routes} from "react-router-dom";
 import Search from './studios/Search';
-import Layout from './Layout';
-import APIContext, {useAPIContext} from "./studios/Context/StudioContext";
+import APIContextStudios, {useAPIContextStudios} from "./studios/Context/StudioContext";
 import StudioInfo from './studios/StudioInfo';
 
 const theme = createTheme({
@@ -41,9 +38,9 @@ function App() {
 
 
     const studios = (
-        <APIContext.Provider value={useAPIContext()}>
+        <APIContextStudios.Provider value={useAPIContextStudios()}>
             <Search />
-        </APIContext.Provider>
+        </APIContextStudios.Provider>
     )
 
   return (

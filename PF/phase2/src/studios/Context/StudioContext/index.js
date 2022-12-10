@@ -1,7 +1,7 @@
 
 import {createContext, useState} from "react";
 
-export const useAPIContext = () => {
+export const useAPIContextStudios = () => {
     const [studios, setStudios] = useState([]);
 
     return {

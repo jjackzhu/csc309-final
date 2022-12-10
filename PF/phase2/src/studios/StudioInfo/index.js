@@ -26,18 +26,15 @@ import { yellow } from '@mui/material/colors';
 import ImageCarousel from './ImageCarousel';
 import ClassList from '../ClassSearch/ClassList';
 import ClassSearch from '../ClassSearch';
-
+import StudioInfoTable from "../../componentsSal/Classes/StudioInfoTable"
 
 
 const StudioInfo = () => {
-    // const { setStudios } = useContext(APIContext);
     const { studio_id } = useParams()
     const [data, setData] = useState([])
     const [status, setStatus] = useState([]);
 
     const location = useLocation();
-    //console.log(location.state)
-   //var address = ""
     const address = location.state.address.address
 
 
@@ -72,7 +69,7 @@ const StudioInfo = () => {
 
 
         <Container sx={{ py: 8 }} maxWidth="md" align="center" alignItems="center" justifyContent="center">
-          
+
 
 
             <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
@@ -81,6 +78,17 @@ const StudioInfo = () => {
             ))}
 
           </Stack>
+
+          <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
+            <Grid container spacing={3}>
+              <Grid item xs={12} >
+                 <Paper sx={{p: 2, display: 'flex', flexDirection: 'column'}}>
+                   <StudioInfoTable studio_id={studio_id} />
+                 </Paper>
+               </Grid>
+            </Grid>
+          </Container>
+
           <ClassSearch studio_id={studio_id}/>
 
         </Container>
@@ -92,7 +100,7 @@ const StudioInfo = () => {
 
         </>
 }
-      
+
       </>
 
     )
