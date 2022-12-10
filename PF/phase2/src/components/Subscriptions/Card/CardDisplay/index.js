@@ -286,7 +286,7 @@ function CardDisplay() {
                         <b>Card Number</b> {card ? card.card_num: "N/A"}
                         </Typography>
                         <Typography variant="h5" color="text.secondary">
-                        <b>cvv</b> {card ? card.cvv: "N/A"}
+                        <b>CVV</b> {card ? card.cvv: "N/A"}
                         </Typography>
                         <Typography variant="h5" color="text.secondary">
                         <b>Name</b> {card ? card.name: "N/A"}

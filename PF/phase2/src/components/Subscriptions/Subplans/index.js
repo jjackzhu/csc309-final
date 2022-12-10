@@ -1,6 +1,6 @@
 import {useContext, useEffect, useState, useRef} from "react";
 import { Navigate } from 'react-router-dom';
-import SubplansTable from "./SubplansTable";
+import SubplansList from "./SubplansList";
 import UserErrorModal from "./ErrorModals";
 import APIContext from "../Contexts/APIContext";
 import Button from '@mui/material/Button';
@@ -101,7 +101,7 @@ const Subplans = () => {
     return (
         <>
             <UserErrorModal/>
-            <SubplansTable/>
+            <SubplansList/>
             <Stack
               m={5}
               direction="row"

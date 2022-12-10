@@ -1,5 +1,6 @@
 import { useContext, useState,  useEffect } from 'react';
 import { Navigate } from 'react-router-dom';
+import { ThemeProvider, createTheme } from "@mui/material/styles";
 import Box from '@mui/material/Box';
 import Card from '@mui/material/Card';
 import Container from '@mui/material/Container';
@@ -22,6 +23,14 @@ const style = {
     },
     border: "5px white"
 }
+
+const orangeTheme = createTheme({ 
+    palette: { 
+        primary: {
+            main: "#FA991C",
+            contrastText: "#fff"
+        }
+    } })
 
 function UserPlanDisplay() {
     const [redirect, setRedirect] = useState(false);
@@ -93,8 +102,8 @@ function UserPlanDisplay() {
                     }}>
                         <b>{userPlan.sub_plan ? 'Edit Plan' : 'Subscribe'}</b>
                     </Button>
+                    <ThemeProvider theme={orangeTheme}>
                     <Button fullWidth 
-                    // style={{backgroundColor: "#FA991C", disabledBackground: 'white',}}
                     variant="contained" 
                     disabled={!userPlan.sub_plan}
                     onClick={() => { 
@@ -121,6 +130,7 @@ function UserPlanDisplay() {
                     }}>
                         <b>Unsubscribe</b>
                     </Button>
+                    </ThemeProvider>
                     </CardActions>
                 </Card>
             </Container>
