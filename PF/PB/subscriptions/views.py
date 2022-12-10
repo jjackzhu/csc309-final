@@ -22,6 +22,19 @@ class SubListView(ListAPIView):
     serializer_class = SubPlanSerializer
 
 
+# check if user has a plan, returns correct url
+class UpdateUserPlanRedirect(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        print(request)
+        try:
+            UserPlan.objects.get(user=self.request.user)
+            return Response({"redirect": "edit"})
+        except UserPlan.DoesNotExist:
+            return Response({"redirect": "add"})
+
+
 # user adding sub plan if they've never subscribed
 class UserAddPlan(CreateAPIView):
     permission_classes = [IsAuthenticated]
@@ -103,7 +116,7 @@ class UserPlanView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        return get_object_or_404(UserPlan, user=self.request.user)
+        return UserPlan.objects.get(user=self.request.user)
 
     def retrieve(self, *args, **kwargs):
         try:
@@ -111,7 +124,7 @@ class UserPlanView(RetrieveAPIView):
             serializer = UserSubPlanSerializer(plan)
             return Response(serializer.data)
         except UserPlan.DoesNotExist:
-            return Response({'response': 'User is not subscribed'})
+            return Response({'details': 'User is not subscribed'})
 
 
 class DeleteUserPlan(APIView):
@@ -144,15 +157,27 @@ class UserCardView(RetrieveAPIView):
     permission_classes = [IsAuthenticated]
 
     def get_object(self):
-        return get_object_or_404(UserCard, user=self.request.user)
+        return UserCard.objects.get(user=self.request.user)
 
     def retrieve(self, *args, **kwargs):
         try:
             card = self.get_object()
-            serializer = UserCardSerializer(card, context={'request': self.request})
+            serializer = UserCardSerializer(card,
+                                            context={'request': self.request})
             return Response(serializer.data)
         except UserCard.DoesNotExist:
             return Response({'detail': 'User has not added a payment method'})
+
+
+class UpdateUserCardRedirect(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+        try:
+            UserCard.objects.get(user=self.request.user)
+            return Response({"redirect": "edit"})
+        except UserCard.DoesNotExist:
+            return Response({"redirect": "add"})
 
 
 class AddUserCard(CreateAPIView):
@@ -162,7 +187,7 @@ class AddUserCard(CreateAPIView):
     def post(self, request, *args, **kwargs):
         try:
             UserCard.objects.get(user=self.request.user)
-            return Response({"response": "user already has a card; editing "
+            return Response({"detail": "user already has a card; editing "
                                          "card is supported"})
         except UserCard.DoesNotExist:
             return super().post(request, *args, **kwargs)
@@ -191,14 +216,14 @@ class EditUserCard(UpdateAPIView):
             UserCard.objects.get(user=self.request.user)
             return super().patch(request, *args, **kwargs)
         except UserCard.DoesNotExist:
-            return Response({"response": "user has not added a card"})
+            return Response({"detail": "user has not added a card"})
 
     def put(self, request, *args, **kwargs):
         try:
             UserCard.objects.get(user=self.request.user)
             return super().put(request, *args, **kwargs)
         except UserCard.DoesNotExist:
-            return Response({"response": "user has not added a card"})
+            return Response({"detail": "user has not added a card"})
 
 
 # view current users payment history and future payments
