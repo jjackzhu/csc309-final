@@ -1,42 +1,125 @@
 import {Table, TableBody, TableCell, TableHead, TableRow} from "@mui/material";
-import {useContext} from "react";
+import {useContext, useEffect, useState} from "react";
 import APIContext from "../../../contextsSal/APIContext";
+import Checkbox from "@mui/material/Checkbox";
+import Toolbar from "@mui/material/Toolbar";
+import Typography from "@mui/material/Typography";
+import Tooltip from "@mui/material/Tooltip";
+import IconButton from "@mui/material/IconButton";
+import AddIcon from '@mui/icons-material/Add';
+import Moment from 'react-moment';
+import moment from 'moment';
 import axios from "axios";
+import {useNavigate} from "react-router-dom";
 
 
-// function createData(username, studio, name, time) {
-//     return { username, studio, name, time};
-// }
+const StudioInfo = ({studio_id}) => {
+    const [available, setAvailable] = useState([]);
 
-const History = () => {
-    const { studios } = useContext(APIContext);
-    const HandleClick = (event) => {
-        event.preventDefault();
-        let studio_num = event.target.innerHTML
-        axios.get(`http://localhost:8000/classes/${studio_num}/info/`)
-            .then((res) => {
-                console.log(res)
+    const [chosen, setChosen] = useState([]);
+
+    let date = moment()
+        .utcOffset('-05:00')
+        .format('YYYY-MM-DD HH:mm:ss');
+    const navigate = useNavigate();
+    const handleClick = (event, name) => {
+        // const selectedIndex = selected.indexOf(name);
+        let newChosen = [];
+
+        if (event.target.checked === true){
+            newChosen = newChosen.concat(chosen, name);
+        }
+        //THIS PART DOES NOT GET CHECK ANYMORE IS IT CUZ OF USEEFFECT?
+        if (event.target.checked === false){
+            newChosen = chosen.filter((item) => {
+                return item !== name
             })
+        }
+        setChosen(newChosen)
+
+    };
+    const handleEnroll = () =>{
+        let promises = [];
+        console.log(chosen)
+        for (let i = 0; i < chosen.length; i++){
+            promises.push(
+                axios.get(`http://localhost:8000/classes/${chosen[i]}/enroll/`, {
+                    headers: {
+                        Authorization : `Bearer ${localStorage.getItem('token')}`
+                    }
+                })
+            )
+
+        }
+        setAvailable([])
+        setChosen([])
+        Promise.all(promises)
+            .then(responses => console.log(responses));
     }
+
+    useEffect(() => {
+        axios.get(`http://localhost:8000/classes/1/info/`)
+            .then((res) => {
+                setAvailable(res.data.results)
+            })
+            .catch((error) =>{
+                if (error.request.status === 401){
+                    console.log('here 401')
+                    navigate('/login')
+                }
+            })
+    }, [available])
     return (
         <>
+            <Toolbar sx={{
+                pl: { sm: 2 },
+                pr: { xs: 1, sm: 1 },
+            }}>
+                <Typography
+                    sx={{ flex: '1 1 100%' }}
+                    variant="h6"
+                    id="tableTitle"
+                    component="div"
+                >
+                    Studio Schedule
+                </Typography>
+                <Tooltip title="Enroll">
+                    <IconButton onClick={handleEnroll}>
+                        <AddIcon />
+                    </IconButton>
+                </Tooltip>
+
+            </Toolbar>
             <Table sx={{ minWidth: 650 }} aria-label="simple table">
                 <TableHead>
                     <TableRow>
-                        <TableCell >Studio ID</TableCell>
-                        <TableCell >Studio Name</TableCell>
-                        <TableCell >Studio Address</TableCell>
+                        <TableCell>
+                            Select to Enroll
+                        </TableCell>
+                        <TableCell >Class ID</TableCell>
+                        <TableCell >Activity</TableCell>
+                        <TableCell >Time</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {studios.map((obj) => (
+                    {available.map((obj) => (
                         <TableRow
-                            key={obj.id + obj.name}
+                            key={obj.id + obj.time}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-                            <TableCell onClick={HandleClick}>{obj.id}</TableCell>
+                            <TableCell>
+                                {moment(date).isBefore(obj.time) ? (
+                                    <Checkbox
+                                        color="primary"
+                                        onChange={(event) => handleClick(event, obj.id)}/>
+                                ) : (
+                                    <></>
+                                )
+                                }
+                            </TableCell>
+                            <TableCell >{obj.id}</TableCell>
                             <TableCell >{obj.name}</TableCell>
-                            <TableCell>{obj.address}</TableCell>
+                            <TableCell><Moment>{obj.time}</Moment></TableCell>
                         </TableRow>
                     ))}
                 </TableBody>
@@ -45,4 +128,4 @@ const History = () => {
     )
 }
 
-export default History;
+export default StudioInfo;
