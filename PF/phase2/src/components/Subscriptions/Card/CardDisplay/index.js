@@ -174,7 +174,7 @@ function CardDisplay() {
                 temp.expires_in = "Expiry data must be valid and in format MM/YY."
             }else{
                 const [month, year] = fieldValues.expires_in.split('/');
-                if(year < today_year || (parseInt(year) === today_year && parseInt(month) <= today_month)){
+                if(year < today_year || (parseInt(year) === today_year && parseInt(month) < today_month)){
                     temp.expires_in = "Card is expired."
                 }else{
                     temp.expires_in = ''
