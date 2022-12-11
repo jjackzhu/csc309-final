@@ -41,6 +41,9 @@ import {
             <b>TORONTO FITNESS CLUB</b>
           </Typography>
           <Stack direction='row' spacing={2}>
+          <Button href="/search" color='inherit'>
+                Search
+            </Button>
             <Button href="/Subscriptions" color='inherit'>
                 Subscriptions
             </Button>
