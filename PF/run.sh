@@ -1,5 +1,6 @@
-source PB/venv/bin/activate
-./PB/manage.py runserver&
+cd PB
+source venv/bin/activate
+./manage.py runserver
 
-cd phase2
+cd ../phase2
 npm start
