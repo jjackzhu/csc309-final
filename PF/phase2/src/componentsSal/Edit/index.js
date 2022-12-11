@@ -1,9 +1,13 @@
 import {Grid, TextField, Avatar, CssBaseline, Typography, Link, Box, Button, Container} from "@mui/material";
+import {createTheme, styled, ThemeProvider} from '@mui/material/styles';
 import logo from "../Static/tfc.png";
 import * as React from "react";
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
-
+import NavBar from "../NavBar"
+import Toolbar from '@mui/material/Toolbar';
+import Paper from '@mui/material/Paper';
+import ProfileTable from "./ProfileTable";
 
 
 
@@ -11,57 +15,62 @@ const Edit = () => {
     //code taken from
     //https://github.com/mui/material-ui/tree/v5.10.16/docs/data/material/getting-started/templates/sign-up
     const navigate = useNavigate();
+
+    const mdTheme = createTheme();
     const HandleSubmit = (event) => {
         event.preventDefault();
         const data = new FormData(event.currentTarget);
-        axios.post('http://localhost:8000/accounts/signup/', {
+        console.log(data.get('username'))
+        axios.put('http://localhost:8000/accounts/edit/', {
             username: data.get('username'),
             first_name: data.get('firstName'),
             last_name: data.get('lastName'),
             email: data.get('email'),
             phone_number: data.get('phoneNumber'),
-            password:data.get('password')
+            password: data.get('password')
+        }, {
+            headers: {
+                Authorization : `Bearer ${localStorage.getItem('token')}`
+            }
         })
             .then(function (response) {
-                console.log(response);
-                axios.post('http://localhost:8000/accounts/login/', {
-                    username: data.get('username'),
-                    password:data.get('password')
-                })
-                    .then(function (response) {
-                        localStorage.setItem('token', response.data.access)
-                        console.log(localStorage.getItem('token'));
-                    })
-                    .catch(function (error) {
-                        //catch error code 400
-                        console.log(error);
-                    });
-
+                console.log(response)
             })
             .catch(function (error) {
+                console.log(localStorage.getItem('token'))
                 console.log(error);
             });
-        navigate('/classes')
+        navigate('/edit')
     };
 
     return (
-        <>
-            <Container  component="main" maxwidth="xs">
-                <CssBaseline />
+        <ThemeProvider theme={mdTheme}>
+            <Box sx={{display: 'flex'}}>
+                <CssBaseline/>
                 <Box
+                    component="form"
+                    noValidate
+                    onSubmit={HandleSubmit}
                     sx={{
-                        marginTop: 8,
-                        display: 'flex',
-                        flexDirection: 'column',
-                        alignItems: 'center',
+                        backgroundColor: (theme) =>
+                            theme.palette.mode === 'light'
+                                ? theme.palette.grey[100]
+                                : theme.palette.grey[900],
+                        flexGrow: 1,
+                        height: '100vh',
+                        overflow: 'auto',
                     }}
                 >
-                    {/*<Avatar alt="TFC" src={logo} sx={{ m: 1, width: 276, height: 150}} variant="square"  />*/}
-                    <Typography component="h1" variant="h5">
-                        Edit
-                    </Typography>
-                    <Box component="form" noValidate onSubmit={HandleSubmit} sx={{ mt: 3 }}>
-                        <Grid container spacing={2}>
+                    <Toolbar/>
+                    <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
+
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} >
+                                <Paper sx={{p: 2, display: 'flex', flexDirection: 'column'}}>
+                                    <ProfileTable/>
+                                </Paper>
+                            </Grid>
+
                             <Grid item xs={12} sm={6}>
                                 <TextField
                                     required
@@ -145,19 +154,12 @@ const Edit = () => {
                             fullWidth
                             sx={{ mt: 3, mb: 2 }}
                         >
-                            Sign Up
+                            Edit
                         </Button>
-                        <Grid container justifyContent="flex-end">
-                            <Grid item>
-                                <Link href="http://localhost:3000/login" variant="body2">
-                                    Already have an account? Log in
-                                </Link>
-                            </Grid>
-                        </Grid>
-                    </Box>
+                    </Container>
                 </Box>
-            </Container>
-        </>
-    )
+            </Box>
+        </ThemeProvider>
+    );
 }
 export default Edit

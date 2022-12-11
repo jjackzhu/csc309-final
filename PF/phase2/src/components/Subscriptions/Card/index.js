@@ -1,4 +1,6 @@
 import { useContext, useEffect, useState } from "react";
+import { Navigate } from 'react-router-dom';
+import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -20,6 +22,7 @@ const style = {
 function Card() {
     const { card, setCard } = useContext(APIContext);
     const [login, setLogin] = useState(true)
+    const [redirect, setRedirect] = useState(false)
 
     const handleClose = (event, reason) => {
         if (reason && reason == "backdropClick") 
@@ -29,8 +32,13 @@ function Card() {
 
     useEffect(() => {
         //token
-        // const token = localStorage.getItem("token")
-        const token = "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzIwNTgwLCJpYXQiOjE2NzA2MzQxODAsImp0aSI6ImQ0ZDE3N2M4ZTg4NTRhY2ViMjQ5MjQwNThkZjQ4ZmI4IiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.T6ItgXj6u5-GNmFc41jDUGD3b6jqfS3YYtBLN_pORck"
+        var token = localStorage.getItem("token")
+        //if no token, they are not logged-in
+        if (!token){
+            setLogin(false)
+            return
+        }
+        token = "Bearer " + token
 
         fetch(`http://localhost:8000/subscriptions/my_card/`,
         {
@@ -56,8 +64,12 @@ function Card() {
         })
     }, [])
 
+    if(redirect){
+        return <Navigate to='/login' />
+    }
     return (
         <>
+        <Box sx={{display: 'flex'}}>
         <Modal
           open={!login}
           onClose={handleClose}
@@ -69,15 +81,16 @@ function Card() {
               You are not logged-in
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Please login to see payment history.
+              Please login to see your card info.
             </Typography>
             <br/>
             <Button variant="contained" size='large' m={5} onClick={() => {
-                console.log("redirect to login")
+                setRedirect(true)
             }}>Login</Button>
           </Box>
         </Modal>
         <CardInfo/>
+        </Box>
         </>
     )
 }

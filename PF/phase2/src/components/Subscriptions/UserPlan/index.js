@@ -1,4 +1,5 @@
 import { useContext, useEffect, useState } from "react";
+import { Navigate } from 'react-router-dom';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -20,6 +21,7 @@ const style = {
 function UserPlan() {
     const { setUserPlan, change, setSubscribed, subscribed } = useContext(APIContext);
     const [login, setLogin] = useState(true)
+    const [redirectLogin, setRedirectLogin] = useState(false)
 
     const handleClose = (event, reason) => {
         if (reason && reason === "backdropClick") 
@@ -28,9 +30,15 @@ function UserPlan() {
     }
     
     useEffect(() => {
-        // const token = localStorage.getItem("token")
-        const token = "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzIxMTg2LCJpYXQiOjE2NzA2MzQ3ODYsImp0aSI6ImNjZmU1Njg1ZjM1MjRjYWY4NjExNTA1NzlmMDU5NTM4IiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.dsecS9YM9m2aSk2SGFFu4z0DYY-NKX4N6uA0hrVzryg"
-    
+        //token
+        var token = localStorage.getItem("token")
+        //if no token, they are not logged-in
+        if (!token){
+            setLogin(false)
+            return
+        }
+        token = "Bearer " + token
+
         fetch(`http://localhost:8000/subscriptions/my_plan/`,
         {
             method: 'GET',
@@ -51,6 +59,10 @@ function UserPlan() {
         })
     }, [change])
 
+    if(redirectLogin){
+        return <Navigate to='/login' />
+    }
+
     return (
         <><Modal
         open={!login}
@@ -63,11 +75,11 @@ function UserPlan() {
             You are not logged-in
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Please login to see payment history.
+            Please login to see your plan.
           </Typography>
           <br/>
           <Button variant="contained" size='large' m={5} onClick={() => {
-              console.log("redirect to login")
+              setRedirectLogin(true)
           }}>Login</Button>
         </Box>
       </Modal>

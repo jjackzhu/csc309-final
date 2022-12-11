@@ -16,6 +16,7 @@ import {useNavigate} from "react-router-dom";
 const History = () => {
     const {attended, setAttended } = useContext(APIContext);
     const [selected, setSelected] = useState([]);
+    const[reloads, setReloads] = useState(true)
     let date = moment()
         .utcOffset('-05:00')
         .format('YYYY-MM-DD HH:mm:ss');
@@ -33,6 +34,7 @@ const History = () => {
             })
         }
         setSelected(newSelected)
+        setReloads(false)
 
     };
 
@@ -52,26 +54,29 @@ const History = () => {
         }
         setAttended([])
         setSelected([])
+        setReloads(true)
         Promise.all(promises)
             .then(responses => console.log(responses));
     }
 
     useEffect(() => {
-        axios.get('http://localhost:8000/classes/history/', {
-            headers: {
-                Authorization : `Bearer ${localStorage.getItem('token')}`
-            }
-        })
-            .then((res) => {
-                setAttended(res.data.results)
-            })
-            .catch((error) =>{
-                if (error.request.status === 401){
-                    console.log('here 401')
-                    navigate('/login')
+        if (reloads) {
+            axios.get('http://localhost:8000/classes/history/', {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem('token')}`
                 }
             })
-    }, [attended])
+                .then((res) => {
+                    setAttended(res.data.results)
+                })
+                .catch((error) => {
+                    if (error.request.status === 401) {
+                        console.log('here 401')
+                        navigate('/login')
+                    }
+                })
+        }
+    }, [reloads])
     return (
         <>
             <Toolbar sx={{

@@ -12,6 +12,7 @@ import LogIn from "./componentsSal/Login";
 import Edit from "./componentsSal/Edit";
 import Dashboard from "./componentsSal/Classes";
 import APIContext, {useAPIContext} from "./contextsSal/APIContext";
+import {MuiNavbar} from "./components/Navbar"
 
 import Search from './studios/Search';
 import APIContextStudios, {useAPIContextStudios} from "./studios/Context/StudioContext";
@@ -35,16 +36,23 @@ function App() {
         <Dashboard />
     </APIContext.Provider>
   )
+    const edit = (
+        <APIContext.Provider value={useAPIContext()}>
+            <Edit />
+        </APIContext.Provider>
+    )
 
-
-    const studios = (
+   const studios = (
         <APIContextStudios.Provider value={useAPIContextStudios()}>
             <Search />
         </APIContextStudios.Provider>
     )
 
+
+
   return (
     <ThemeProvider theme={theme}>
+      <MuiNavbar/>
       <BrowserRouter>
         <subAPIContext.Provider value={useSubAPIContext()}>
           <Routes>
@@ -53,25 +61,15 @@ function App() {
                   <Route path="subscriptions/" element={<Subplans />} />
                   <Route path="subscriptions/my_plan" element={ <UserPlan />} />
                   <Route path="my_payments/" element={<PaymentHistory />} />
+                  <Route index element={<SignUp />} />
+                  <Route path="login" element={<LogIn />} />
+                  <Route path="classes" element={classes} />
+                  <Route path="edit" element={edit} />
+                  <Route path="search" element={studios} />
+                  <Route path="studios/:studio_id/info" element={<StudioInfo />} />
               </Route>
           </Routes>
         </subAPIContext.Provider>
-
-        <Routes>
-          <Route path="/" >
-            <Route index element={<SignUp />} />
-              <Route path="login" element={<LogIn />} />
-              <Route path="classes" element={classes} />
-              <Route path="edit" element={<Edit/>} />
-            </Route>
-          </Routes>
-
-         <Routes>
-            <Route path="/" >
-            <Route path="studios" element={studios} />
-            <Route path="studios/:studio_id/info" element={<StudioInfo />} />
-            </Route>
-         </Routes>
       </BrowserRouter>
     </ThemeProvider>
   )
