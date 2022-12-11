@@ -31,9 +31,14 @@ function App() {
     <APIContext.Provider value={useAPIContext()}>  
         <Dashboard />  
     </APIContext.Provider>  
-  )  
-  
-  return (
+  )
+    const edit = (
+        <APIContext.Provider value={useAPIContext()}>
+            <Edit />
+        </APIContext.Provider>
+    )
+
+    return (
     <ThemeProvider theme={theme}>
       <BrowserRouter>
         <subAPIContext.Provider value={useSubAPIContext()}>
@@ -52,7 +57,7 @@ function App() {
             <Route index element={<SignUp />} />
               <Route path="login" element={<LogIn />} />
               <Route path="classes" element={classes} />
-              <Route path="edit" element={<Edit/>} />
+              <Route path="edit" element={edit} />
           </Route>
         </Routes>
       </BrowserRouter>

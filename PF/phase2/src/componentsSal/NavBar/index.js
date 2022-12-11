@@ -70,7 +70,7 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
         },
     }),
 );
-const NavBar = ({array}) => {
+const NavBar = () => {
 
     const navigate = useNavigate();
 
@@ -134,16 +134,20 @@ const NavBar = ({array}) => {
                 </Toolbar>
                 <Divider/>
                 <List component="nav">
-                    {array.map((name) => (
-                        <ListItemButton component={Link} to={'/' + name}>
+
+                        <ListItemButton component={Link} to='/classes'>
                             <ListItemIcon>
                                 <PagesIcon />
                             </ListItemIcon>
-                            <ListItemText primary={name} />
+                            <ListItemText primary='classes' />
                         </ListItemButton>
+                    <ListItemButton component={Link} to='/edit'>
+                        <ListItemIcon>
+                            <PagesIcon />
+                        </ListItemIcon>
+                        <ListItemText primary='Edit' />
+                    </ListItemButton>
 
-                    ))
-                    }
                 </List>
             </Drawer>
         </>
