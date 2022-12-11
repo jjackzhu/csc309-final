@@ -32,10 +32,14 @@ function App() {
     <APIContext.Provider value={useAPIContext()}>  
         <Dashboard />  
     </APIContext.Provider>  
-  )  
+  )
+    const edit = (
+        <APIContext.Provider value={useAPIContext()}>
+            <Edit />
+        </APIContext.Provider>
+    )
 
-  return (
-    
+    return (
     <ThemeProvider theme={theme}>
       <MuiNavbar/>
       <BrowserRouter>
@@ -49,20 +53,10 @@ function App() {
                   <Route index element={<SignUp />} />
                   <Route path="login" element={<LogIn />} />
                   <Route path="classes" element={classes} />
-                  <Route path="edit" element={<Edit/>} />
+                  <Route path="edit" element={edit} />
               </Route>
           </Routes>
         </subAPIContext.Provider>
-
-      
-        {/* <Routes>
-          <Route path="/" element={<NavBar array={['classes', 'edit']}/>}>
-            <Route index element={<SignUp />} />
-              <Route path="login" element={<LogIn />} />
-              <Route path="classes" element={classes} />
-              <Route path="edit" element={<Edit/>} />
-          </Route>
-        </Routes> */}
       </BrowserRouter>
     </ThemeProvider>
   )

@@ -56,16 +56,16 @@ function DashboardContent() {
                     <Toolbar/>
                     <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
                         <Grid container spacing={3}>
-                            <Grid item xs={12} >
-                                <Paper sx={{p: 2, display: 'flex', flexDirection: 'column'}}>
-                                    <StudioInfoTable studio_id={1} />
-                                </Paper>
-                            </Grid>
                             {/*<Grid item xs={12} >*/}
                             {/*    <Paper sx={{p: 2, display: 'flex', flexDirection: 'column'}}>*/}
-                            {/*        <HistoryTable />*/}
+                            {/*        <StudioInfoTable studio_id={1} />*/}
                             {/*    </Paper>*/}
                             {/*</Grid>*/}
+                            <Grid item xs={12} >
+                                <Paper sx={{p: 2, display: 'flex', flexDirection: 'column'}}>
+                                    <HistoryTable />
+                                </Paper>
+                            </Grid>
                         </Grid>
                     </Container>
                 </Box>

@@ -57,10 +57,10 @@ class EnrollClassView(APIView):
         # check if user subscribed
 
         #TESTING PURPOSES PUT BACK AFTER
-        # if not user.is_subscribed(class_to_enroll.time.date()):
-        #     return Response({
-        #         'detail': "User not subscribed"
-        #     })
+        if not user.is_subscribed(class_to_enroll.time.date()):
+            return Response({
+                'detail': "User not subscribed"
+            })
 
         # update classes
         # check capacity and time

@@ -70,7 +70,7 @@ const Drawer = styled(MuiDrawer, {shouldForwardProp: (prop) => prop !== 'open'})
         },
     }),
 );
-const NavBar = ({array}) => {
+const NavBar = () => {
 
     const navigate = useNavigate();
 
@@ -134,36 +134,20 @@ const NavBar = ({array}) => {
                 </Toolbar>
                 <Divider/>
                 <List component="nav">
-                    <ListItemButton key='sub' component={Link} to={'/subscriptions'}>
+
+                        <ListItemButton component={Link} to='/classes'>
                             <ListItemIcon>
                                 <PagesIcon />
                             </ListItemIcon>
-                            <ListItemText primary={'Subscriptions'} />
-                    </ListItemButton>
-                    <ListItemButton key={'classes'} component={Link} to={'/classes'}>
+                            <ListItemText primary='classes' />
+                        </ListItemButton>
+                    <ListItemButton component={Link} to='/edit'>
                         <ListItemIcon>
                             <PagesIcon />
                         </ListItemIcon>
-                        <ListItemText primary={'Classes'} />
+                        <ListItemText primary='Edit' />
                     </ListItemButton>
-                    <ListItemButton key={'edit'} component={Link} to={'/edit'}>
-                        <ListItemIcon>
-                            <PagesIcon />
-                        </ListItemIcon>
-                        <ListItemText primary={'Edit Profile'} />
-                    </ListItemButton>
-                    <ListItemButton key='card' component={Link} to={'/subscriptions/my_card'}>
-                            <ListItemIcon>
-                                <PagesIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={'My Card'} />
-                    </ListItemButton>
-                    <ListItemButton key='plan' component={Link} to={'/subscriptions/my_plan'}>
-                            <ListItemIcon>
-                                <PagesIcon />
-                            </ListItemIcon>
-                            <ListItemText primary={'My Plan'} />
-                    </ListItemButton>
+
                 </List>
             </Drawer>
         </>
