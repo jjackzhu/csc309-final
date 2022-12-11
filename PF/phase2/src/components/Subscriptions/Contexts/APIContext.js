@@ -37,7 +37,7 @@ export const useSubAPIContext = () => {
         subscribed,
         setSubscribed,
         change,
-        setChange
+        setChange,
     }
 }
 

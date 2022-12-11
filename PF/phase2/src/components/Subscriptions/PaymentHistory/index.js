@@ -1,4 +1,5 @@
 import {useContext, useEffect, useState, useRef} from "react";
+import { Navigate } from 'react-router-dom';
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
 import Box from '@mui/material/Box';
@@ -23,6 +24,7 @@ const PaymentHistory = () => {
     const perPage = 5;
     const [params, setParams] = useState({page: 1})
     const [login, setLogin] = useState(true)
+    const [redirectLogin, setRedirectLogin] = useState(false)
     const { payments, setPayments, subPlan, card } = useContext(APIContext);
 
     const handleClose = (event, reason) => {
@@ -42,8 +44,13 @@ const PaymentHistory = () => {
     
     useEffect(() => {
         //token
-        // const token = localStorage.getItem("token")
-        const token = "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzIxMTg2LCJpYXQiOjE2NzA2MzQ3ODYsImp0aSI6ImNjZmU1Njg1ZjM1MjRjYWY4NjExNTA1NzlmMDU5NTM4IiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.dsecS9YM9m2aSk2SGFFu4z0DYY-NKX4N6uA0hrVzryg"
+        var token = localStorage.getItem("token")
+        //if no token, they are not logged-in
+        if (!token){
+            setLogin(false)
+            return
+        }
+        token = "Bearer " + token
 
         fetch(`http://localhost:8000/subscriptions/my_payments/?limit=${perPage}&num_future_payments=${perPage*params.page}&offset=${perPage*(params.page - 1)}`, {
             method: 'GET',
@@ -62,6 +69,10 @@ const PaymentHistory = () => {
         }).catch(error => {console.log("Error fetching payments", error)});
     }, [params, subPlan, card])
 
+    if(redirectLogin){
+        return <Navigate to='/login' />
+    }
+    
     return(
         <>
         <Modal
@@ -79,7 +90,7 @@ const PaymentHistory = () => {
             </Typography>
             <br/>
             <Button variant="contained" size='large' m={5} onClick={() => {
-                console.log("redirect to login")
+                setRedirectLogin(true)
             }}>Login</Button>
           </Box>
         </Modal>

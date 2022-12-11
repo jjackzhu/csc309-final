@@ -107,8 +107,13 @@ function UserPlanDisplay() {
                     variant="contained" 
                     disabled={!userPlan.sub_plan}
                     onClick={() => { 
-                        // const token = localStorage.getItem("token")
-                        const token = "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzIxMTg2LCJpYXQiOjE2NzA2MzQ3ODYsImp0aSI6ImNjZmU1Njg1ZjM1MjRjYWY4NjExNTA1NzlmMDU5NTM4IiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.dsecS9YM9m2aSk2SGFFu4z0DYY-NKX4N6uA0hrVzryg"
+                        //token
+                        var token = localStorage.getItem("token")
+                        //if no token, they are not logged-in
+                        if (!token){
+                            return
+                        }
+                        token = "Bearer " + token
 
                         fetch(`http://localhost:8000/subscriptions/unsubscribe/`,
                             {

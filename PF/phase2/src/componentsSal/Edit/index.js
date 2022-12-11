@@ -47,7 +47,6 @@ const Edit = () => {
         <ThemeProvider theme={mdTheme}>
             <Box sx={{display: 'flex'}}>
                 <CssBaseline/>
-                <NavBar/>
                 <Box
                     component="form"
                     noValidate

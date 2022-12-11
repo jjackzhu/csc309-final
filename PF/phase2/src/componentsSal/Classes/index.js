@@ -41,7 +41,6 @@ function DashboardContent() {
         <ThemeProvider theme={mdTheme}>
             <Box sx={{display: 'flex'}}>
                 <CssBaseline/>
-                <NavBar/>
                 <Box
                     component="main"
                     sx={{

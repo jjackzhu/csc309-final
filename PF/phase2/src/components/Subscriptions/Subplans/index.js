@@ -5,9 +5,10 @@ import UserErrorModal from "./ErrorModals";
 import APIContext from "../Contexts/APIContext";
 import Button from '@mui/material/Button';
 import Stack from '@mui/material/Stack';
+import {MuiNavbar} from "../../Navbar"
 
 const Subplans = () => {
-    const [redirect, setRedirect] = useState(false);
+    const [redirectCard, setRedirectCard] = useState(false);
 
     //updates user plan if subscribe button clicked
     const { updatePlan, setUpdatePlan, change, setChange } = useContext(APIContext);
@@ -36,8 +37,13 @@ const Subplans = () => {
     const isMountRef = useRef(true);
     useEffect(() => {
         //token
-        // const token = localStorage.getItem("token")
-        const token = "Bearer " + "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbl90eXBlIjoiYWNjZXNzIiwiZXhwIjoxNjcwNzIxMTg2LCJpYXQiOjE2NzA2MzQ3ODYsImp0aSI6ImNjZmU1Njg1ZjM1MjRjYWY4NjExNTA1NzlmMDU5NTM4IiwidXNlcl9pZCI6MSwidXNlcm5hbWUiOiJhZG1pbiJ9.dsecS9YM9m2aSk2SGFFu4z0DYY-NKX4N6uA0hrVzryg"
+        var token = localStorage.getItem("token")
+        //if no token, they are not logged-in
+        if (!token){
+            setShowPlanModal({show: true, error: "not logged-in"})
+            return
+        }
+        token = "Bearer " + token
 
         // checks if mounted
         if (isMountRef.current || !updatePlan.id) { 
@@ -85,7 +91,7 @@ const Subplans = () => {
             }else{
                 alert("Your plan has been updated succesfully")
                 setChange(!change)
-                setRedirect(true)
+                setRedirectCard(true)
             }
             setUpdatePlan({id:null})
         })
@@ -95,7 +101,7 @@ const Subplans = () => {
     var prevDisable = params.page === 1 ? true : false
     var nextDisable = params.page === Math.ceil(total / perPage) ? true : false
 
-    if(redirect){
+    if(redirectCard){
         return <Navigate to='/subscriptions/my_plan' />
     }
     return (

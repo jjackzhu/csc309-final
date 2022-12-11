@@ -12,6 +12,7 @@ import LogIn from "./componentsSal/Login";
 import Edit from "./componentsSal/Edit";
 import Dashboard from "./componentsSal/Classes";
 import APIContext, {useAPIContext} from "./contextsSal/APIContext";
+import {MuiNavbar} from "./components/Navbar"
 
 
 const theme = createTheme({
@@ -40,6 +41,7 @@ function App() {
 
     return (
     <ThemeProvider theme={theme}>
+      <MuiNavbar/>
       <BrowserRouter>
         <subAPIContext.Provider value={useSubAPIContext()}>
           <Routes>
@@ -48,18 +50,13 @@ function App() {
                   <Route path="subscriptions/" element={<Subplans />} />
                   <Route path="subscriptions/my_plan" element={ <UserPlan />} />
                   <Route path="my_payments/" element={<PaymentHistory />} />
+                  <Route index element={<SignUp />} />
+                  <Route path="login" element={<LogIn />} />
+                  <Route path="classes" element={classes} />
+                  <Route path="edit" element={edit} />
               </Route>
           </Routes>
         </subAPIContext.Provider>
-      
-        <Routes>
-          <Route path="/" >
-            <Route index element={<SignUp />} />
-              <Route path="login" element={<LogIn />} />
-              <Route path="classes" element={classes} />
-              <Route path="edit" element={edit} />
-          </Route>
-        </Routes>
       </BrowserRouter>
     </ThemeProvider>
   )
