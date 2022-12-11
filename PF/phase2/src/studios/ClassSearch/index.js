@@ -28,6 +28,7 @@ const ClassSearch = ({studio_id}) => {
     //const [address, setAddress] = useState("")
     const [page, setPage] = useState(1)
     const [error, setError] = useState({message: "", display: "none"})
+  
     //const [params, setParams] = useState({page: 1, time_range: ""})
    //const [params, setParams] = useState({page: 1, address: ""})
 
@@ -47,6 +48,7 @@ const ClassSearch = ({studio_id}) => {
         event.preventDefault();
         const { class_names, coaches, start_date, end_date, start_time, end_time } = inputs;
         setPage(1)
+        //setDisplay('none')
         //console.log(start_date)
         if (start_date && end_date){
           if (start_date.$y < end_date.$y){
@@ -61,7 +63,9 @@ const ClassSearch = ({studio_id}) => {
          else{
            setError({message: "Please enter a end date later than the start date.", display: "visible"})
           }
+          
       }
+      fetchClasses()
     }
 
     const fetchClasses = () => {
@@ -233,7 +237,7 @@ return inputs && (
 </form>
 
 
-<ClassList classes={data.results}/>
+<ClassList classes={data.results} studio_id={studio_id}/>
 
 <Container maxWidth="md" align="center" alignItems="center" justifyContent="center">
 <Button onClick={() => setPage(Math.max(1, page - 1))}>

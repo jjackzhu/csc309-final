@@ -21,10 +21,12 @@ const LogIn = () => {
             .then(function (response) {
                 console.log(response)
                 localStorage.setItem('token', response.data.access)
+                console.log(localStorage.getItem('token'))
                 console.log(localStorage.getItem('token'));
             })
             .catch(function (error) {
                 //catch error code 400
+                console.log(localStorage.getItem('token'));
                 console.log(error);
             });
         navigate('/classes')

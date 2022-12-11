@@ -85,11 +85,11 @@ class EnrollClassView(APIView):
                 time=class_to_enroll.time
             )
             return Response({
-                'detail': "user was enrolled"
+                'success': "Already enrolled"
             })
         else:
             return Response({
-                'detail': "user was already enrolled"
+                'detail': "Already enrolled"
             })
 
 

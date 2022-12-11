@@ -72,12 +72,13 @@ const StudioInfo = () => {
 
 
 
-            <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
+          <Stack direction="row" spacing={1} alignItems="center" justifyContent="center">
             {data.amenities.map((item) => (
             <Chip label={`${item.type} x ${item.quantity}`} variant="outlined" align="center" />
             ))}
 
           </Stack>
+
 
           <Container maxWidth="lg" sx={{mt: 4, mb: 4}}>
             <Grid container spacing={3}>
@@ -88,6 +89,7 @@ const StudioInfo = () => {
                </Grid>
             </Grid>
           </Container>
+
 
           <ClassSearch studio_id={studio_id}/>
 

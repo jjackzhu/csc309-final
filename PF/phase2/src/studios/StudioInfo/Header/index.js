@@ -89,7 +89,6 @@ function Header({studio, address}) {
               <a href={`https://www.google.com/maps/dir/?api=1&origin=${address}&destination=${studio.latitude},${studio.longitude}`} target="_blank" rel="noreferrer">
               <Button variant="contained">Get Directions</Button>
               </a>
-              <Button variant="outlined">View Classes</Button>
             </Stack>
 
 

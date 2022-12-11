@@ -11,9 +11,10 @@ import Moment from 'react-moment';
 import moment from 'moment';
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-
+import Alert from '@mui/material/Alert';
 
 const StudioInfo = ({studio_id}) => {
+    const [message, setMessage] = useState({message: "", severity: "", display: "none"})
     const [available, setAvailable] = useState([]);
 
     const [chosen, setChosen] = useState([]);
@@ -25,6 +26,7 @@ const StudioInfo = ({studio_id}) => {
         .format('YYYY-MM-DD HH:mm:ss');
     const navigate = useNavigate();
     const handleClick = (event, name) => {
+        setMessage({message: "", severity: "", display: "none"})
         // const selectedIndex = selected.indexOf(name);
         let newChosen = [];
 
@@ -51,6 +53,15 @@ const StudioInfo = ({studio_id}) => {
                         Authorization : `Bearer ${localStorage.getItem('token')}`
                     }
                 })
+                .then((res) => {
+                    if (res.data.detail){
+                        setMessage({message: res.data.detail, severity: "error", display: "visible"})
+                    }
+                    else if (res.data.success) {
+                        setMessage({message: "Enrolled", severity: "success", display: "visible"})
+                    }
+                })
+                
             )
 
         }
@@ -77,6 +88,7 @@ const StudioInfo = ({studio_id}) => {
     }, [reload])
     return (
         <>
+         <Alert severity={message.severity} sx={{display: message.display}}> {message.message} </Alert>
             <Toolbar sx={{
                 pl: { sm: 2 },
                 pr: { xs: 1, sm: 1 },

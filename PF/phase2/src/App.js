@@ -60,8 +60,6 @@ function App() {
         <Routes>
           <Route path="/" >
             <Route index element={<SignUp />} />
-              <Route path="studios" element={studios} />
-              <Route path="studios/:studio_id/info" element={<StudioInfo />} />
               <Route path="login" element={<LogIn />} />
               <Route path="classes" element={classes} />
               <Route path="edit" element={<Edit/>} />
@@ -70,7 +68,6 @@ function App() {
 
          <Routes>
             <Route path="/" >
-            <Route index element={<SignUp />} />
             <Route path="studios" element={studios} />
             <Route path="studios/:studio_id/info" element={<StudioInfo />} />
             </Route>

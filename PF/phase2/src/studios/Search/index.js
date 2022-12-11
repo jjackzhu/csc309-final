@@ -50,9 +50,7 @@ const Search = () => {
 
     const initialRender = useRef(0);
     useEffect(() => {
-        if (initialRender.current < 2) {
-            initialRender.current += 1;
-          } else if (params.address) {
+        if (params.address) {
             //console.log(params.address)
 
         const { streetNum, streetName, studio_names, amenities } = inputs;
