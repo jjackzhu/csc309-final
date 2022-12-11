@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import { Navigate } from 'react-router-dom';
+import CssBaseline from '@mui/material/CssBaseline';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import Modal from '@mui/material/Modal';
@@ -68,6 +69,7 @@ function Card() {
     }
     return (
         <>
+        <Box sx={{display: 'flex'}}>
         <Modal
           open={!login}
           onClose={handleClose}
@@ -79,7 +81,7 @@ function Card() {
               You are not logged-in
             </Typography>
             <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-              Please login to see payment history.
+              Please login to see your card info.
             </Typography>
             <br/>
             <Button variant="contained" size='large' m={5} onClick={() => {
@@ -88,6 +90,7 @@ function Card() {
           </Box>
         </Modal>
         <CardInfo/>
+        </Box>
         </>
     )
 }

@@ -134,16 +134,36 @@ const NavBar = ({array}) => {
                 </Toolbar>
                 <Divider/>
                 <List component="nav">
-                    {array.map((name) => (
-                        <ListItemButton component={Link} to={'/' + name}>
+                    <ListItemButton key='sub' component={Link} to={'/subscriptions'}>
                             <ListItemIcon>
                                 <PagesIcon />
                             </ListItemIcon>
-                            <ListItemText primary={name} />
-                        </ListItemButton>
-
-                    ))
-                    }
+                            <ListItemText primary={'Subscriptions'} />
+                    </ListItemButton>
+                    <ListItemButton key={'classes'} component={Link} to={'/classes'}>
+                        <ListItemIcon>
+                            <PagesIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Classes'} />
+                    </ListItemButton>
+                    <ListItemButton key={'edit'} component={Link} to={'/edit'}>
+                        <ListItemIcon>
+                            <PagesIcon />
+                        </ListItemIcon>
+                        <ListItemText primary={'Edit Profile'} />
+                    </ListItemButton>
+                    <ListItemButton key='card' component={Link} to={'/subscriptions/my_card'}>
+                            <ListItemIcon>
+                                <PagesIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={'My Card'} />
+                    </ListItemButton>
+                    <ListItemButton key='plan' component={Link} to={'/subscriptions/my_plan'}>
+                            <ListItemIcon>
+                                <PagesIcon />
+                            </ListItemIcon>
+                            <ListItemText primary={'My Plan'} />
+                    </ListItemButton>
                 </List>
             </Drawer>
         </>

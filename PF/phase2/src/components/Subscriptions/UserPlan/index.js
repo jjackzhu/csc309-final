@@ -75,7 +75,7 @@ function UserPlan() {
             You are not logged-in
           </Typography>
           <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            Please login to see payment history.
+            Please login to see your plan.
           </Typography>
           <br/>
           <Button variant="contained" size='large' m={5} onClick={() => {

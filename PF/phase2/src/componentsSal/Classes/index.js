@@ -18,7 +18,7 @@ import {ListItemButton, ListItemIcon, ListItemText} from "@mui/material";
 import HistoryTable from "./HistoryTable";
 import StudioInfoTable from "./StudioInfoTable";
 import {useContext} from "react";
-// import NavBar from "../../componentsSal/NavBar"
+import NavBar from "../../componentsSal/NavBar"
 
 
 //code from here
@@ -41,7 +41,6 @@ function DashboardContent() {
         <ThemeProvider theme={mdTheme}>
             <Box sx={{display: 'flex'}}>
                 <CssBaseline/>
-                <NavBar array={['classes', 'edit']} />
                 <Box
                     component="main"
                     sx={{
