@@ -71,7 +71,7 @@ const History = () => {
                 })
                 .catch((error) => {
                     if (error.request.status === 401) {
-                        console.log('here 401')
+                        console.log('Not Logged In!')
                         navigate('/login')
                     }
                 })
